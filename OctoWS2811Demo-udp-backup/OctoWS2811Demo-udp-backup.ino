@@ -21,7 +21,6 @@ unsigned int plafondPort2 = 9165;      // local port to listen on
 // buffers for receiving and sending data
 char packetBufferP1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
 char packetBufferP2[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
-//char  ReplyBuffer[] = "acknowledged";       // a string to send back
 
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP UdpP1;
@@ -29,7 +28,6 @@ EthernetUDP UdpP2;
 
 #define NUM_LEDS_PER_STRIP 504
 #define NUM_STRIPS 4
-
 
 CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 
@@ -39,6 +37,7 @@ CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 void setup() {
   LEDS.addLeds<OCTOWS2811>(leds, NUM_LEDS_PER_STRIP);
   LEDS.setBrightness(33);
+  
   // start the Ethernet and UDP:
   Ethernet.begin(mac,ip);
   UdpP1.begin(plafondPort1);
@@ -59,17 +58,17 @@ void loop() {
     UdpP2.read(packetBufferP2,UDP_TX_PACKET_MAX_SIZE);
   }
   Serial.println(packetBufferP1);
-//  Serial.print("packetBuffer: ");
-//  Serial.println(packetBuffer[0] + packetBuffer[1] + packetBuffer[2]);
-//  static uint8_t hue = 0;
+  
   for(int i = 0; i < NUM_STRIPS; i++) {
     for(int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-      if(j < 490)
-        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP1[(j*3)],packetBufferP1[(j*3)+1],packetBufferP1[(j*3)+2]);
+      if(i == 3) {
+        if(j < 490)
+          leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP1[(j*3)],packetBufferP1[(j*3)+1],packetBufferP1[(j*3)+2]);
+        else
+          leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP2[(j*3)],packetBufferP2[(j*3)+1],packetBufferP2[(j*3)+2]);
+      }
       else
-        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP2[(j*3)],packetBufferP2[(j*3)+1],packetBufferP2[(j*3)+2]);
-
-//        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(255,0,255);
+        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(0, 255, 0);
     }
   }
       
