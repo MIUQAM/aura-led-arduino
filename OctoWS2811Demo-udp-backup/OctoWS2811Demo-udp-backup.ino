@@ -15,14 +15,17 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(10, 0, 1, 155);
 
-unsigned int plafondPort1 = 9155;      // local port to listen on
-unsigned int plafondPort2 = 9165;      // local port to listen on
+unsigned int champiPort1 = 9151; //First Champignon
+unsigned int plafondPort1 = 9155; // First half of plafond leds
+unsigned int plafondPort2 = 9165; // Second half of pland leds
 
 // buffers for receiving and sending data
-char packetBufferP1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
-char packetBufferP2[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char packetBufferC1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold plafond 1
+char packetBufferP1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold plafond 1
+char packetBufferP2[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold plafond 2
 
 // An EthernetUDP instance to let us send and receive packets over UDP
+EthernetUDP UdpC1;
 EthernetUDP UdpP1;
 EthernetUDP UdpP2;
 
@@ -40,6 +43,7 @@ void setup() {
   
   // start the Ethernet and UDP:
   Ethernet.begin(mac,ip);
+  UdpC1.begin(champiPort1);
   UdpP1.begin(plafondPort1);
   UdpP2.begin(plafondPort2);
   Serial.begin(115200);
@@ -47,8 +51,13 @@ void setup() {
 }
 
 void loop() {
+  int packetSizeC1 = UdpC1.parsePacket();
   int packetSizeP1 = UdpP1.parsePacket();
   int packetSizeP2 = UdpP2.parsePacket();
+  if(packetSizeC1)
+  {
+    UdpC1.read(packetBufferC1,UDP_TX_PACKET_MAX_SIZE);
+  }
   if(packetSizeP1)
   {
     UdpP1.read(packetBufferP1,UDP_TX_PACKET_MAX_SIZE);
@@ -61,7 +70,13 @@ void loop() {
   
   for(int i = 0; i < NUM_STRIPS; i++) {
     for(int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-      if(i == 3) {
+      if(i == 0) {
+        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferC1[(j*3)],packetBufferC1[(j*3)+1],packetBufferC1[(j*3)+2]);
+      }
+      else if(i == 1) {
+        leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferC1[(j*3)],packetBufferC1[(j*3)+1],packetBufferC1[(j*3)+2]);
+      }
+      else if(i == 3) {
         if(j < 490)
           leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP1[(j*3)],packetBufferP1[(j*3)+1],packetBufferP1[(j*3)+2]);
         else
