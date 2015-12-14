@@ -36,7 +36,7 @@ EthernetUDP UdpP1;
 EthernetUDP UdpP2;
 
 #define NUM_LEDS_PER_STRIP 504
-#define NUM_STRIPS 4
+#define NUM_STRIPS 8
 
 CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 
@@ -84,7 +84,7 @@ void loop() {
   {
     UdpP2.read(packetBufferP2,UDP_TX_PACKET_MAX_SIZE);
   }
-  Serial.println(packetBufferC1);
+//  Serial.println(packetBufferC1);
   
   for(int i = 0; i < NUM_STRIPS; i++) {
     for(int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
@@ -102,7 +102,7 @@ void loop() {
         if(j < 490)
           leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP1[(j*3)],packetBufferP1[(j*3)+1],packetBufferP1[(j*3)+2]);
         else
-          leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP2[(j*3)],packetBufferP2[(j*3)+1],packetBufferP2[(j*3)+2]);
+          leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(packetBufferP2[(j*3) - 1470],packetBufferP2[((j*3)+1) - 1470],packetBufferP2[((j*3)+2) - 1470]);
       }
       else
         leds[(i*NUM_LEDS_PER_STRIP) + j] = CRGB(0, 0, 0);
