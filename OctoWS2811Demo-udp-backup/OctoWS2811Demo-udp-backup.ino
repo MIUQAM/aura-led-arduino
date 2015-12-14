@@ -7,7 +7,7 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>         // UDP library from: bjoern@cs.stanford.edu 12/30/2008
 
-#define UDP_TX_PACKET_MAX_SIZE 6020
+#define UDP_TX_PACKET_MAX_SIZE 1522
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
