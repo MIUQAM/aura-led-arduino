@@ -8,7 +8,7 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(10, 0, 1, 155);
 
-unsigned int localPort = 9155;
+unsigned int localPort = 9151;
 char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
 
 // An EthernetUDP instance to let us send and receive packets over UDP
