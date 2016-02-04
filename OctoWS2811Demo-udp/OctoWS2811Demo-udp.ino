@@ -14,13 +14,13 @@
 // The IP address will be dependent on your local network:
 byte mac[] = {  
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(10, 0, 1, 155);
+IPAddress ip(10, 0, 1, 111);
 
 //unsigned int champiPort1 = 9151;      // Plafond part 1
 //unsigned int champiPort2 = 9152;      // Plafond part 1
 //unsigned int champiPort3 = 9153;      // Plafond part 1
-unsigned int plafondPort1 = 9155;      // Plafond part 1
-unsigned int plafondPort2 = 9165;      // Plafond part 2
+unsigned int plafondPort1 = 9111;      // Plafond part 1
+unsigned int plafondPort2 = 9112;      // Plafond part 2
 
 // buffers for receiving and sending data
 //char packetBufferC1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,

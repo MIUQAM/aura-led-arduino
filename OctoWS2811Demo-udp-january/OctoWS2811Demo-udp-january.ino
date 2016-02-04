@@ -12,14 +12,14 @@
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
 byte mac[] = {  
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(10, 0, 1, 155);
+  0xDE, 0xAD, 0xBE, 0xEF, 0x01, 0x11 };
+IPAddress ip(10, 0, 1, 111);
 
-unsigned int champiPort1 = 9151; //Champignon 1
-unsigned int champiPort2 = 9152; //Champignon 1
-unsigned int champiPort3 = 9153; //Champignon 1
-unsigned int plafondPort1 = 9155; // First half of plafond leds
-unsigned int plafondPort2 = 9165; // Second half of pland leds
+unsigned int champiPort1 = 9155; //Champignon 1
+unsigned int champiPort2 = 9156; //Champignon 1
+unsigned int champiPort3 = 9113; //Champignon 1
+unsigned int plafondPort1 = 9158; // First half of plafond leds
+unsigned int plafondPort2 = 9169; // Second half of pland leds
 
 // buffers for receiving and sending data
 char packetBufferC1[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold champ 1
@@ -35,8 +35,8 @@ EthernetUDP UdpC3;
 EthernetUDP UdpP1;
 EthernetUDP UdpP2;
 
-#define NUM_LEDS_PER_STRIP 504
-#define NUM_STRIPS 8
+#define NUM_LEDS_PER_STRIP 490
+#define NUM_STRIPS 2
 
 CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 

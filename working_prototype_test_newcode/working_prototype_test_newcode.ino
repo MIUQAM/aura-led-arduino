@@ -7,21 +7,31 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>         // UDP library from: bjoern@cs.stanford.edu 12/30/2008
 
-#define PIN 2
-#define LED_COUNT 490
+#define PIN 0
+#define PIN2 1
+#define PIN3 2
+#define LED_COUNT 350
 #define UDP_TX_PACKET_MAX_SIZE 1522
 
 byte mac[] = {  
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x55 };
 IPAddress ip(10, 0, 1, 111);
 
-unsigned int localPort = 9155;      // local port to listen on
+unsigned int localPort = 9111;      // local port to listen on
+unsigned int localPort2 = 9112;      // local port to listen on
+unsigned int localPort3 = 9151;      // local port to listen on
 char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char packetBuffer2[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char packetBuffer3[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
 
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
+EthernetUDP Udp2;
+EthernetUDP Udp3;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LED_COUNT, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip2 = Adafruit_NeoPixel(LED_COUNT, PIN2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip3 = Adafruit_NeoPixel(LED_COUNT, PIN3, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -30,17 +40,25 @@ void setup() {
   #endif
   // End of trinket special code
   
-  strip.setBrightness(127);
+  strip.setBrightness(255);
+  strip2.setBrightness(255);
+  strip3.setBrightness(255);
 
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
+  strip2.begin();
+  strip2.show(); // Initialize all pixels to 'off'
+  strip3.begin();
+  strip3.show(); // Initialize all pixels to 'off'
 
-  rainbow(20);
+//  rainbow(20);
   
   
   // start the Ethernet and UDP:
   Ethernet.begin(mac,ip);
   Udp.begin(localPort);
+  Udp2.begin(localPort2);
+  Udp3.begin(localPort3);
 //  Serial.begin(115200);
 //  Serial.println("Init...");
 }
@@ -85,6 +103,16 @@ void loop() {
   {
     Udp.read(packetBuffer,UDP_TX_PACKET_MAX_SIZE);
   }
+  int packetSize2 = Udp2.parsePacket();
+  if(packetSize2)
+  {
+    Udp2.read(packetBuffer2,UDP_TX_PACKET_MAX_SIZE);
+  }
+  int packetSize3 = Udp3.parsePacket();
+  if(packetSize3)
+  {
+    Udp3.read(packetBuffer3,UDP_TX_PACKET_MAX_SIZE);
+  }
 //  Serial.println("OK");
 //  Serial.println(packetBuffer);
   for(uint16_t j = 0; j < LED_COUNT; j++) {
@@ -94,8 +122,12 @@ void loop() {
 //    uint16_t color = packetBuffer[(j*3)] + (packetBuffer[(j*3)+1] << 8) + (packetBuffer[(j*3)+2] << 16);
 //    uint32_t color = packetBuffer[(j*3)] + (packetBuffer[(j*3)+1] << 8) + (packetBuffer[(j*3)+2] << 16);
     strip.setPixelColor(j, strip.Color(packetBuffer[(j*3)], packetBuffer[(j*3)+1], packetBuffer[(j*3)+2]));
+    strip2.setPixelColor(j, strip2.Color(packetBuffer2[(j*3)], packetBuffer2[(j*3)+1], packetBuffer2[(j*3)+2]));
+    strip3.setPixelColor(j, strip3.Color(packetBuffer3[(j*3)], packetBuffer3[(j*3)+1], packetBuffer3[(j*3)+2]));
   }
   strip.show();
+  strip2.show();
+  strip3.show();
 }
 
 //void ledPacket

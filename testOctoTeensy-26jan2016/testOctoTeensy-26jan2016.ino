@@ -15,7 +15,7 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(10, 0, 1, 155);
 
-unsigned int champiPort1 = 9151; //Champignon 1
+unsigned int champiPort1 = 9157; //Champignon 1
 unsigned int champiPort2 = 9152; //Champignon 1
 unsigned int champiPort3 = 9153; //Champignon 1
 unsigned int plafondPort1 = 9155; // First half of plafond leds
